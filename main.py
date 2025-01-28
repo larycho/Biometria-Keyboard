@@ -7,24 +7,35 @@ last_key = -1
 start = time.time()
 end = time.time()
 key_hold_times = np.zeros(26)
+key_find_times = np.zeros(26)
+
+start_find = time.time()
+end_find = time.time()
 
 def on_press(key):
-    global last_key, start
+    global last_key, start, end_find, start_dinf
 
     if last_key == -1: # If no other key is being held down
         try:
             print('alphanumeric key {0} pressed'.format(key.char))
             last_key = key.char
             start = time.time()
-        except AttributeError: # Throws error when special key pressed (esc, shift, etc.)
+            end_find = time.time()
+
+            index = string.ascii_lowercase.index(key.char) # Converts letter to its position in the latin alphabet (1 - a, 2 - b, etc.)
+            if 0 <= index <= 25:
+                key_find_times[index] = end_find - start_find
+
+        except (AttributeError, ValueError): # Throws error when special key pressed (esc, shift, etc.)
             print('special key {0} pressed'.format(key))
 
 def on_release(key):
-    global last_key, end, start
+    global last_key, end, start, start_find
 
     print('{0} released'.format(key))
     last_key = -1
     end = time.time()
+    start_find = time.time()
 
     print('time elapsed: {0} seconds'.format(end - start))
 
@@ -47,3 +58,4 @@ with keyboard.Listener(
     listener.join()
 
 print(key_hold_times)
+print(key_find_times)
