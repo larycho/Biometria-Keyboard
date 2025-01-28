@@ -92,10 +92,14 @@ for i in range(26):
     else:
         key_find_avg_times[i] = 0.
 
+# print(key_hold_times)
+# print(key_find_times)
 
+# print(key_hold_avg_times)
+# print(key_find_avg_times)
 
-print(key_hold_times)
-print(key_find_times)
+output = np.array([key_hold_times, key_hold_avg_times, key_find_times, key_find_avg_times])
 
-print(key_hold_avg_times)
-print(key_find_avg_times)
+np.savetxt("output.csv", output, delimiter = ",")
+np.savetxt("output.txt", output, delimiter = ",")
+
